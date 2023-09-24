@@ -1,84 +1,24 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { readYaml } from "./utils";
 import yaml from "js-yaml";
-
-interface IDockerComposeFile {
-  version: string;
-  networks: INetworkItem[];
-  volumes: IVolumeItem[];
-  services?: IServiceItem[];
-}
-
-interface IContainerHealthCheck {
-  test?: string[];
-  interval?: string;
-  timeout?: string;
-  retries?: number;
-}
-
-interface IServiceItem {
-  [serviceName: string]: {
-    image: string;
-    ports?: string[];
-    volumes?: string[];
-    networks: string[];
-    depends_on?: string[];
-    deploy: {
-      replicas: number;
-      update_config?: {
-        parallelism: number;
-        delay?: string;
-      };
-      restart_policy: {
-        condition: string;
-        delay?: string;
-        max_attempts?: number;
-        window?: string;
-      };
-      mode?: string;
-      labels?: string[];
-      placement?: {
-        constraints: string[];
-      };
-    };
-  };
-}
-
-interface INetworkItem {
-  [key: string]: string;
-}
-
-interface IVolumeItem {
-  [key: string]: string;
-}
-
-interface IServiceNode {
-  id: string;
-  position: { x: number; y: number };
-  data: IServiceItem;
-}
-
-interface INetworkNode {
-  id: string;
-  position: { x: number; y: number };
-  data: INetworkItem;
-}
-
-interface IVolumeNode {
-  id: string;
-  position: { x: number; y: number };
-  data: IVolumeItem;
-}
+import ReactFlow from "reactflow";
+import NetworkNode from "./components/NetworkNode";
+import VolumeNode from "./components/VolumeNode";
+import ServiceNode from "./components/ServiceNode";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
     null
   );
-
   const [serviceNodes, setServiceNodes] = useState<IServiceNode[]>([]);
   const [networkNodes, setNetworkNodes] = useState<INetworkNode[]>([]);
   const [volumeNodes, setVolumeNodes] = useState<IVolumeNode[]>([]);
+
+  const nodeTypes = useMemo(
+    () => ({ network: NetworkNode, volume: VolumeNode, service: ServiceNode }),
+    []
+  );
 
   const handleFileInputChange = (event: any) => {
     const file = event.target.files[0];
@@ -92,31 +32,102 @@ const App = () => {
 
   useEffect(() => {
     if (fileContent) {
+      if (!!fileContent.networks) {
+        let networks = Object.keys(fileContent.networks).map((item, index) => {
+          return {
+            id: `${item}`,
+            position: { x: index * 250, y: 200 },
+            type: "network",
+            data: { label: `${item}` },
+          };
+        });
+        setNetworkNodes((networks as any) || []);
+      }
+
+      if (!!fileContent?.volumes && !!fileContent.networks) {
+        let networks = Object.keys(fileContent.networks).map((item, index) => {
+          return {
+            id: `${item}`,
+            position: { x: index * 250, y: 200 },
+            type: "network",
+            data: { label: `${item}` },
+          };
+        });
+        setNetworkNodes((networks as any) || []);
+        let volumes = Object.keys(fileContent.volumes).map((item, index) => {
+          return {
+            id: `${item}`,
+            position: { x: index * 250 + networks.length * 250, y: 200 },
+            type: "volume",
+            data: { label: `${item}` },
+          };
+        });
+        setVolumeNodes((volumes as any) || []);
+      }
+
+      const mappedServices = Object.entries(fileContent.services as any).map(
+        ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
+      );
+
+      let temp1: any[] = [];
+      let temp2: any[] = [];
+
+      mappedServices.forEach((item, index) => {
+        let isContainPort = !!(item?.[Object.keys(item)?.[0]] as any)?.ports;
+        if (isContainPort) {
+          temp2?.push(item);
+        } else {
+          temp1.push(item);
+        }
+      });
+
+      let services = temp1?.map((item, index) => {
+        return {
+          id: `${JSON.stringify(item)}`,
+          position: {
+            x: index * 250,
+            y: 0,
+          },
+          type: "service",
+          data: item,
+        };
+      });
+
+      let serviceWithPorts = temp2.map((item, index) => {
+        return {
+          id: `${JSON.stringify(item)}`,
+          position: {
+            x: index * 250,
+            y: -200,
+          },
+          type: "service",
+          data: item,
+        };
+      });
+
+      setServiceNodes(services.concat((serviceWithPorts as any) || []));
+
+      console.log("sevices", services);
     }
   }, [fileContent]);
+
+  const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
+
+  console.log("file content", fileContent);
 
   return (
     <>
       {fileContent ? (
         <>
-          <h1>Networks</h1>
-          <div>
-            {Object.keys(fileContent.networks).map((item, key) => (
-              <div key={key}>
-                <h2>{item}</h2>
-              </div>
-            ))}
-          </div>
-          <h1>Services</h1>
-          <div>
-            {Object.entries(fileContent.services as any).map(
-              ([serviceName, serviceData]) => (
-                <div key={serviceName}>
-                  <h1>{serviceName}</h1>
-                  Image : <h3>{(serviceData as any).image}</h3>
-                </div>
-              )
-            )}
+          <div style={{ width: "100vw", height: "100vh" }}>
+            <ReactFlow
+              nodes={networkNodes
+                .concat(serviceNodes)
+                .concat(volumeNodes)
+                .concat()}
+              edges={initialEdges}
+              nodeTypes={nodeTypes}
+            />
           </div>
         </>
       ) : (
