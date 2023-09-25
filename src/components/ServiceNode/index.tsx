@@ -14,10 +14,10 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
   return (
     <>
       <Handle type="target" position={Position.Top} />
-      <div className="border-gray-500 border-solid border justify-center align-center py-1 h-20 w-52 overflow-hidden">
+      <div className="border-gray-500 border-solid border justify-center align-center py-1 h-24 w-52 overflow-hidden">
         <h4 className="text-center text-sm">{serviceKeyName}</h4>
         <h4 className="text-center text-sm break-words">
-          {data?.[serviceKeyName]?.image}
+          image: {data?.[serviceKeyName]?.image}
         </h4>
       </div>
       <Handle type="source" position={Position.Bottom} id="a" />

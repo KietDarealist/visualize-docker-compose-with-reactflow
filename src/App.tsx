@@ -19,6 +19,8 @@ const App = () => {
     () => ({ network: NetworkNode, volume: VolumeNode, service: ServiceNode }),
     []
   );
+  const totalEdges = [{ id: "e1-2", source: "1", target: "2" }];
+  const totalNodes = networkNodes.concat(serviceNodes).concat(volumeNodes);
 
   const handleFileInputChange = (event: any) => {
     const file = event.target.files[0];
@@ -38,19 +40,18 @@ const App = () => {
             id: `${item}`,
             position: { x: index * 250, y: 200 },
             type: "network",
-            data: { label: `${item}` },
+            data: item,
           };
         });
-        setNetworkNodes((networks as any) || []);
+        setNetworkNodes(networks);
       }
-
       if (!!fileContent?.volumes && !!fileContent.networks) {
         let networks = Object.keys(fileContent.networks).map((item, index) => {
           return {
             id: `${item}`,
             position: { x: index * 250, y: 200 },
             type: "network",
-            data: { label: `${item}` },
+            data: item,
           };
         });
         setNetworkNodes((networks as any) || []);
@@ -59,7 +60,7 @@ const App = () => {
             id: `${item}`,
             position: { x: index * 250 + networks.length * 250, y: 200 },
             type: "volume",
-            data: { label: `${item}` },
+            data: item,
           };
         });
         setVolumeNodes((volumes as any) || []);
@@ -69,19 +70,19 @@ const App = () => {
         ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
       );
 
-      let temp1: any[] = [];
-      let temp2: any[] = [];
+      let mappedServiceWihoutPort: any[] = [];
+      let mappedServiceWithPort: any[] = [];
 
       mappedServices.forEach((item, index) => {
         let isContainPort = !!(item?.[Object.keys(item)?.[0]] as any)?.ports;
         if (isContainPort) {
-          temp2?.push(item);
+          mappedServiceWithPort?.push(item);
         } else {
-          temp1.push(item);
+          mappedServiceWihoutPort.push(item);
         }
       });
 
-      let services = temp1?.map((item, index) => {
+      let services = mappedServiceWihoutPort?.map((item, index) => {
         return {
           id: `${JSON.stringify(item)}`,
           position: {
@@ -93,7 +94,7 @@ const App = () => {
         };
       });
 
-      let serviceWithPorts = temp2.map((item, index) => {
+      let serviceWithPorts = mappedServiceWithPort.map((item, index) => {
         return {
           id: `${JSON.stringify(item)}`,
           position: {
@@ -106,14 +107,8 @@ const App = () => {
       });
 
       setServiceNodes(services.concat((serviceWithPorts as any) || []));
-
-      console.log("sevices", services);
     }
   }, [fileContent]);
-
-  const initialEdges = [{ id: "e1-2", source: "1", target: "2" }];
-
-  console.log("file content", fileContent);
 
   return (
     <>
@@ -121,11 +116,8 @@ const App = () => {
         <>
           <div style={{ width: "100vw", height: "100vh" }}>
             <ReactFlow
-              nodes={networkNodes
-                .concat(serviceNodes)
-                .concat(volumeNodes)
-                .concat()}
-              edges={initialEdges}
+              nodes={totalNodes}
+              edges={totalEdges}
               nodeTypes={nodeTypes}
             />
           </div>
