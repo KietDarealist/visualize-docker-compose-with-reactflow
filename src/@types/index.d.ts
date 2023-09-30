@@ -65,3 +65,9 @@ interface IVolumeNode {
   position: { x: number; y: number };
   data: any;
 }
+
+interface IPortNode {
+  id: string;
+  position: { x: number; y: number };
+  data: any;
+}

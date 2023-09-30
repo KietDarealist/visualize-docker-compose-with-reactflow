@@ -6,6 +6,7 @@ import ReactFlow from "reactflow";
 import NetworkNode from "./components/NetworkNode";
 import VolumeNode from "./components/VolumeNode";
 import ServiceNode from "./components/ServiceNode";
+import PortNode from "./components/PortNode";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
@@ -14,13 +15,22 @@ const App = () => {
   const [serviceNodes, setServiceNodes] = useState<IServiceNode[]>([]);
   const [networkNodes, setNetworkNodes] = useState<INetworkNode[]>([]);
   const [volumeNodes, setVolumeNodes] = useState<IVolumeNode[]>([]);
+  const [portNodes, setPortNodes] = useState<IPortNode[]>([]);
 
   const nodeTypes = useMemo(
-    () => ({ network: NetworkNode, volume: VolumeNode, service: ServiceNode }),
+    () => ({
+      network: NetworkNode,
+      volume: VolumeNode,
+      service: ServiceNode,
+      port: PortNode,
+    }),
     []
   );
   const totalEdges = [{ id: "e1-2", source: "1", target: "2" }];
-  const totalNodes = networkNodes.concat(serviceNodes).concat(volumeNodes);
+  const totalNodes = networkNodes
+    .concat(serviceNodes)
+    .concat(volumeNodes)
+    .concat(portNodes);
 
   const handleFileInputChange = (event: any) => {
     const file = event.target.files[0];
@@ -105,6 +115,24 @@ const App = () => {
           data: item,
         };
       });
+      let portNodesOfService: any[] = [];
+      serviceWithPorts?.forEach((item, index) => {
+        let listPortsOfServices = item.data?.[Object.keys(item.data)[0]]
+          ?.ports as string[];
+        listPortsOfServices?.forEach((port, portIndex) => {
+          portNodesOfService?.push({
+            id: port,
+            position: {
+              x: index * 250,
+              y: -400,
+            },
+            type: "port",
+            data: port,
+          });
+        });
+      });
+
+      setPortNodes(portNodesOfService);
 
       setServiceNodes(services.concat((serviceWithPorts as any) || []));
     }
