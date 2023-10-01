@@ -2,20 +2,27 @@ import React, { useEffect, useMemo, useState } from "react";
 
 import { readYaml } from "./utils";
 import yaml from "js-yaml";
-import ReactFlow from "reactflow";
-import NetworkNode from "./components/NetworkNode";
-import VolumeNode from "./components/VolumeNode";
-import ServiceNode from "./components/ServiceNode";
-import PortNode from "./components/PortNode";
+import ReactFlow, { MarkerType } from "reactflow";
+import NetworkNode from "./components/nodes/NetworkNode";
+import VolumeNode from "./components/nodes/VolumeNode";
+import ServiceNode from "./components/nodes/ServiceNode";
+import PortNode from "./components/nodes/PortNode";
+import CustomConnectionLine from "./components/connectionLine/CustomConnectionLine";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
     null
   );
+
+  //nodes
   const [serviceNodes, setServiceNodes] = useState<IServiceNode[]>([]);
   const [networkNodes, setNetworkNodes] = useState<INetworkNode[]>([]);
   const [volumeNodes, setVolumeNodes] = useState<IVolumeNode[]>([]);
   const [portNodes, setPortNodes] = useState<IPortNode[]>([]);
+
+  //edges
+  const [portToServiceEdges, setPortToServiceEdges] = useState<any[]>([]);
+  const [serviceToNetworkEdges, setServiceToNetworkEdges] = useState<any[]>([]);
 
   const nodeTypes = useMemo(
     () => ({
@@ -26,7 +33,8 @@ const App = () => {
     }),
     []
   );
-  const totalEdges = [{ id: "e1-2", source: "1", target: "2" }];
+
+  const totalEdges = portToServiceEdges.concat(serviceToNetworkEdges);
   const totalNodes = networkNodes
     .concat(serviceNodes)
     .concat(volumeNodes)
@@ -96,8 +104,8 @@ const App = () => {
         return {
           id: `${JSON.stringify(item)}`,
           position: {
-            x: index * 250,
-            y: 0,
+            x: index * 250 + 1000,
+            y: -200,
           },
           type: "service",
           data: item,
@@ -106,7 +114,7 @@ const App = () => {
 
       let serviceWithPorts = mappedServiceWithPort.map((item, index) => {
         return {
-          id: `${JSON.stringify(item)}`,
+          id: `service-${index.toString()}`,
           position: {
             x: index * 250,
             y: -200,
@@ -116,6 +124,7 @@ const App = () => {
         };
       });
       let portNodesOfService: any[] = [];
+
       serviceWithPorts?.forEach((item, index) => {
         let listPortsOfServices = item.data?.[Object.keys(item.data)[0]]
           ?.ports as string[];
@@ -123,7 +132,7 @@ const App = () => {
           portNodesOfService?.push({
             id: port,
             position: {
-              x: index * 250,
+              x: index * 250 + 55,
               y: -400,
             },
             type: "port",
@@ -132,11 +141,69 @@ const App = () => {
         });
       });
 
-      setPortNodes(portNodesOfService);
+      let edgesFromPortToService: any[] = [];
 
+      portNodesOfService.forEach((port, portIndex) => {
+        serviceWithPorts.forEach((service, serviceIndex) => {
+          if (
+            (
+              service.data?.[Object.keys(service.data)[0]]?.ports as string[]
+            ).includes(port?.data)
+          ) {
+            edgesFromPortToService?.push({
+              id: `${port.id}-${service.id}`,
+              source: port.id,
+              target: service.id,
+              type: "straight",
+              markerEnd: {
+                type: MarkerType.ArrowClosed,
+                width: 40,
+                height: 20,
+                color: "black",
+                gap: 100,
+              },
+            });
+          }
+        });
+      });
+
+      setPortNodes(portNodesOfService);
+      setPortToServiceEdges(edgesFromPortToService);
       setServiceNodes(services.concat((serviceWithPorts as any) || []));
     }
   }, [fileContent]);
+
+  useEffect(() => {
+    let edgesFromServiceToNetwork: any[] = [];
+    if (networkNodes.length > 0) {
+      networkNodes.forEach((network, networkIndex) => {
+        serviceNodes.forEach((service, serviceIndex) => {
+          if (!!service.data?.[Object.keys(service.data)[0]]?.networks) {
+            if (
+              (
+                service.data?.[Object.keys(service.data)[0]]
+                  ?.networks as string[]
+              ).includes(`${network?.id}`)
+            ) {
+              edgesFromServiceToNetwork?.push({
+                id: `${network.id}-${service.id}`,
+                source: service.id,
+                target: network.id,
+                type: "straight",
+                markerEnd: {
+                  type: MarkerType.ArrowClosed,
+                  width: 40,
+                  height: 20,
+                  color: "black",
+                },
+              });
+            }
+          }
+        });
+      });
+    }
+    setServiceToNetworkEdges(edgesFromServiceToNetwork);
+  }, [networkNodes, serviceNodes]);
 
   return (
     <>
@@ -147,6 +214,7 @@ const App = () => {
               nodes={totalNodes}
               edges={totalEdges}
               nodeTypes={nodeTypes}
+              connectionLineComponent={CustomConnectionLine}
             />
           </div>
         </>
