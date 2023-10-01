@@ -160,7 +160,7 @@ const App = () => {
                 width: 40,
                 height: 20,
                 color: "black",
-                gap: 100,
+                gap: 20,
               },
             });
           }
