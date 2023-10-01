@@ -84,66 +84,92 @@ const App = () => {
         setVolumeNodes((volumes as any) || []);
       }
 
-      if (!!fileContent.services) {
-        const mappedServices = Object.entries(fileContent.services as any).map(
-          ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
-        );
+      const mappedServices = Object.entries(fileContent.services as any).map(
+        ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
+      );
 
-        let mappedServiceWihoutPort: any[] = [];
-        let mappedServiceWithPort: any[] = [];
+      let mappedServiceWihoutPort: any[] = [];
+      let mappedServiceWithPort: any[] = [];
 
-        mappedServices.forEach((item, index) => {
-          let isContainPort = !!(item?.[Object.keys(item)?.[0]] as any)?.ports;
-          if (isContainPort) {
-            mappedServiceWithPort?.push(item);
-          } else {
-            mappedServiceWihoutPort.push(item);
-          }
-        });
+      mappedServices.forEach((item, index) => {
+        let isContainPort = !!(item?.[Object.keys(item)?.[0]] as any)?.ports;
+        if (isContainPort) {
+          mappedServiceWithPort?.push(item);
+        } else {
+          mappedServiceWihoutPort.push(item);
+        }
+      });
 
-        let services = mappedServiceWihoutPort?.map((item, index) => {
-          return {
-            id: `${JSON.stringify(item)}`,
+      let services = mappedServiceWihoutPort?.map((item, index) => {
+        return {
+          id: `${JSON.stringify(item)}`,
+          position: {
+            x: index * 250 + 1000,
+            y: -200,
+          },
+          type: "service",
+          data: item,
+        };
+      });
+
+      let serviceWithPorts = mappedServiceWithPort.map((item, index) => {
+        return {
+          id: `service-${index.toString()}`,
+          position: {
+            x: index * 250,
+            y: -200,
+          },
+          type: "service",
+          data: item,
+        };
+      });
+      let portNodesOfService: any[] = [];
+
+      serviceWithPorts?.forEach((item, index) => {
+        let listPortsOfServices = item.data?.[Object.keys(item.data)[0]]
+          ?.ports as string[];
+        listPortsOfServices?.forEach((port, portIndex) => {
+          portNodesOfService?.push({
+            id: port,
             position: {
-              x: index * 250 + 1000,
-              y: -200,
+              x: index * 250 + 55,
+              y: -400,
             },
-            type: "service",
-            data: item,
-          };
-        });
-
-        let serviceWithPorts = mappedServiceWithPort.map((item, index) => {
-          return {
-            id: `service-${index.toString()}`,
-            position: {
-              x: index * 250,
-              y: -200,
-            },
-            type: "service",
-            data: item,
-          };
-        });
-        let portNodesOfService: any[] = [];
-
-        serviceWithPorts?.forEach((item, index) => {
-          let listPortsOfServices = item.data?.[Object.keys(item.data)[0]]
-            ?.ports as string[];
-          listPortsOfServices?.forEach((port, portIndex) => {
-            portNodesOfService?.push({
-              id: port,
-              position: {
-                x: index * 250 + 55,
-                y: -400,
-              },
-              type: "port",
-              data: port,
-            });
+            type: "port",
+            data: port,
           });
         });
-        setPortNodes(portNodesOfService);
-        setServiceNodes(services.concat((serviceWithPorts as any) || []));
-      }
+      });
+
+      let edgesFromPortToService: any[] = [];
+
+      portNodesOfService.forEach((port, portIndex) => {
+        serviceWithPorts.forEach((service, serviceIndex) => {
+          if (
+            (
+              service.data?.[Object.keys(service.data)[0]]?.ports as string[]
+            ).includes(port?.data)
+          ) {
+            edgesFromPortToService?.push({
+              id: `${port.id}-${service.id}`,
+              source: port.id,
+              target: service.id,
+              type: "straight",
+              markerEnd: {
+                type: MarkerType.ArrowClosed,
+                width: 40,
+                height: 20,
+                color: "black",
+                gap: 100,
+              },
+            });
+          }
+        });
+      });
+
+      setPortNodes(portNodesOfService);
+      setPortToServiceEdges(edgesFromPortToService);
+      setServiceNodes(services.concat((serviceWithPorts as any) || []));
     }
   }, [fileContent]);
 
@@ -178,36 +204,6 @@ const App = () => {
     }
     setServiceToNetworkEdges(edgesFromServiceToNetwork);
   }, [networkNodes, serviceNodes]);
-
-  useEffect(() => {
-    let edgesFromPortToService: any[] = [];
-    if (portNodes?.length > 0 && serviceNodes?.length > 0) {
-      portNodes.forEach((port, portIndex) => {
-        serviceNodes.forEach((service, serviceIndex) => {
-          if (
-            (
-              service.data?.[Object.keys(service.data)[0]]?.ports as string[]
-            ).includes(port?.data)
-          ) {
-            edgesFromPortToService?.push({
-              id: `${port.id}-${service.id}`,
-              source: port.id,
-              target: service.id,
-              type: "straight",
-              markerEnd: {
-                type: MarkerType.ArrowClosed,
-                width: 40,
-                height: 20,
-                color: "black",
-                gap: 100,
-              },
-            });
-          }
-        });
-      });
-      setPortToServiceEdges(edgesFromPortToService);
-    }
-  }, [portNodes, serviceNodes]);
 
   return (
     <>
