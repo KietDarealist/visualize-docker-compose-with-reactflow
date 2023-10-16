@@ -23,6 +23,7 @@ const App = () => {
   //edges
   const [portToServiceEdges, setPortToServiceEdges] = useState<any[]>([]);
   const [serviceToNetworkEdges, setServiceToNetworkEdges] = useState<any[]>([]);
+  const [volumeToNetworkEdges, setVolumeToNetworkEdges] = useState<any[]>([]);
 
   const nodeTypes = useMemo(
     () => ({
@@ -34,7 +35,9 @@ const App = () => {
     []
   );
 
-  const totalEdges = portToServiceEdges.concat(serviceToNetworkEdges);
+  const totalEdges = portToServiceEdges
+    .concat(serviceToNetworkEdges)
+    .concat(volumeToNetworkEdges);
   const totalNodes = networkNodes
     .concat(serviceNodes)
     .concat(volumeNodes)
@@ -52,6 +55,7 @@ const App = () => {
 
   useEffect(() => {
     if (fileContent) {
+      //store service nodes
       if (!!fileContent.networks) {
         let networks = Object.keys(fileContent.networks).map((item, index) => {
           return {
@@ -63,6 +67,8 @@ const App = () => {
         });
         setNetworkNodes(networks);
       }
+
+      //store network nodes
       if (!!fileContent?.volumes && !!fileContent.networks) {
         let networks = Object.keys(fileContent.networks).map((item, index) => {
           return {
@@ -84,10 +90,10 @@ const App = () => {
         setVolumeNodes((volumes as any) || []);
       }
 
+      //store service nodes
       const mappedServices = Object.entries(fileContent.services as any).map(
         ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
       );
-
       let mappedServiceWihoutPort: any[] = [];
       let mappedServiceWithPort: any[] = [];
 
@@ -99,7 +105,6 @@ const App = () => {
           mappedServiceWihoutPort.push(item);
         }
       });
-
       let services = mappedServiceWihoutPort?.map((item, index) => {
         return {
           id: `${JSON.stringify(item)}`,
@@ -111,7 +116,6 @@ const App = () => {
           data: item,
         };
       });
-
       let serviceWithPorts = mappedServiceWithPort.map((item, index) => {
         return {
           id: `service-${index.toString()}`,
@@ -123,8 +127,9 @@ const App = () => {
           data: item,
         };
       });
-      let portNodesOfService: any[] = [];
 
+      //store port nodes
+      let portNodesOfService: any[] = [];
       serviceWithPorts?.forEach((item, index) => {
         let listPortsOfServices = item.data?.[Object.keys(item.data)[0]]
           ?.ports as string[];
@@ -141,8 +146,8 @@ const App = () => {
         });
       });
 
+      //store edges
       let edgesFromPortToService: any[] = [];
-
       portNodesOfService.forEach((port, portIndex) => {
         serviceWithPorts.forEach((service, serviceIndex) => {
           if (
@@ -174,6 +179,7 @@ const App = () => {
   }, [fileContent]);
 
   useEffect(() => {
+    //stores edge from service to network
     let edgesFromServiceToNetwork: any[] = [];
     if (networkNodes.length > 0) {
       networkNodes.forEach((network, networkIndex) => {
@@ -204,6 +210,44 @@ const App = () => {
     }
     setServiceToNetworkEdges(edgesFromServiceToNetwork);
   }, [networkNodes, serviceNodes]);
+
+  useEffect(() => {
+    //stores edge from service to volume
+    let edgesFromServiceToVolume: any[] = [];
+    if (volumeNodes.length > 0) {
+      volumeNodes.forEach((volume, volumeIndex) => {
+        serviceNodes.forEach((service, serviceIndex) => {
+          if (!!service.data?.[Object.keys(service.data)[0]]?.volumes) {
+            (
+              service.data?.[Object.keys(service.data)[0]]?.volumes as any[]
+            )?.forEach((kiet, my) => {
+              console.log("kiet is", kiet);
+              let split = kiet?.split(":") as string[];
+
+              split.forEach((splitItem, splitIndex) => {
+                if (splitItem == volume.id) {
+                  console.log("u made it");
+                  edgesFromServiceToVolume?.push({
+                    id: `${volume.id}-${service.id}`,
+                    source: service.id,
+                    target: volume.id,
+                    type: "straight",
+                    markerEnd: {
+                      type: MarkerType.ArrowClosed,
+                      width: 40,
+                      height: 20,
+                      color: "black",
+                    },
+                  });
+                }
+              });
+            });
+          }
+        });
+      });
+    }
+    setVolumeToNetworkEdges(edgesFromServiceToVolume);
+  }, [volumeNodes, serviceNodes]);
 
   return (
     <>
