@@ -53,6 +53,20 @@ const App = () => {
     reader.readAsText(file);
   };
 
+  const detectNetworkIncluded = (
+    networkObject: Object | Array<any>,
+    networkId: string
+  ) => {
+    let result = false;
+    if (Array.isArray(networkObject)) {
+      result = (networkObject as any[]).includes(networkId);
+    } else {
+      result = false;
+    }
+
+    return result;
+  };
+
   useEffect(() => {
     if (fileContent) {
       //store service nodes
@@ -95,28 +109,13 @@ const App = () => {
         ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
       );
       let mappedServiceWihoutPort: any[] = [];
-      let mappedServiceWithPort: any[] = [];
+      let clonedMappedService: any[] = [];
 
       mappedServices.forEach((item, index) => {
-        let isContainPort = !!(item?.[Object.keys(item)?.[0]] as any)?.ports;
-        if (isContainPort) {
-          mappedServiceWithPort?.push(item);
-        } else {
-          mappedServiceWihoutPort.push(item);
-        }
+        clonedMappedService?.push(item);
       });
-      let services = mappedServiceWihoutPort?.map((item, index) => {
-        return {
-          id: `${JSON.stringify(item)}`,
-          position: {
-            x: index * 250 + 1000,
-            y: -200,
-          },
-          type: "service",
-          data: item,
-        };
-      });
-      let serviceWithPorts = mappedServiceWithPort.map((item, index) => {
+
+      let serviceWithPorts = clonedMappedService.map((item, index) => {
         return {
           id: `service-${index.toString()}`,
           position: {
@@ -153,7 +152,7 @@ const App = () => {
           if (
             (
               service.data?.[Object.keys(service.data)[0]]?.ports as string[]
-            ).includes(port?.data)
+            )?.includes(port?.data)
           ) {
             edgesFromPortToService?.push({
               id: `${port.id}-${service.id}`,
@@ -174,7 +173,7 @@ const App = () => {
 
       setPortNodes(portNodesOfService);
       setPortToServiceEdges(edgesFromPortToService);
-      setServiceNodes(services.concat((serviceWithPorts as any) || []));
+      setServiceNodes(serviceWithPorts);
     }
   }, [fileContent]);
 
@@ -186,10 +185,10 @@ const App = () => {
         serviceNodes.forEach((service, serviceIndex) => {
           if (!!service.data?.[Object.keys(service.data)[0]]?.networks) {
             if (
-              (
-                service.data?.[Object.keys(service.data)[0]]
-                  ?.networks as string[]
-              ).includes(`${network?.id}`)
+              detectNetworkIncluded(
+                service.data?.[Object.keys(service.data)[0]]?.networks,
+                `${network?.id}`
+              )
             ) {
               edgesFromServiceToNetwork?.push({
                 id: `${network.id}-${service.id}`,
@@ -221,9 +220,7 @@ const App = () => {
             (
               service.data?.[Object.keys(service.data)[0]]?.volumes as any[]
             )?.forEach((kiet, my) => {
-              console.log("kiet is", kiet);
               let split = kiet?.split(":") as string[];
-
               split.forEach((splitItem, splitIndex) => {
                 if (splitItem == volume.id) {
                   console.log("u made it");
