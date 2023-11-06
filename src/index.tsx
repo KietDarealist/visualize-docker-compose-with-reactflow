@@ -5,6 +5,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import ReactFlow from "reactflow";
 import "reactflow/dist/style.css";
+import "@fontsource/inter";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement

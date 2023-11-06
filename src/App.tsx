@@ -4,13 +4,15 @@ import React, { useEffect, useMemo, useState } from "react";
 import yaml from "js-yaml";
 
 //styles
-import ReactFlow, { MarkerType } from "reactflow";
-import NetworkNode from "./components/nodes/NetworkNode";
-import VolumeNode from "./components/nodes/VolumeNode";
-import ServiceNode from "./components/nodes/ServiceNode";
-import PortNode from "./components/nodes/PortNode";
-import CustomConnectionLine from "./components/connectionLine/CustomConnectionLine";
-import Banner from "./components/home/Banner";
+import ReactFlow, { MarkerType, useNodesState } from "reactflow";
+import NetworkNode from "./components/NetworkNode";
+import VolumeNode from "./components/VolumeNode";
+import ServiceNode from "./components/ServiceNode";
+import PortNode from "./components/PortNode";
+import CustomConnectionLine from "./components/CustomConnectionLine";
+import Banner from "./components/Banner";
+import ToolBar from "./components/ToolBar";
+import PositionedMenu from "./components/PositionMenu";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
@@ -22,6 +24,7 @@ const App = () => {
   const [networkNodes, setNetworkNodes] = useState<INetworkNode[]>([]);
   const [volumeNodes, setVolumeNodes] = useState<IVolumeNode[]>([]);
   const [portNodes, setPortNodes] = useState<IPortNode[]>([]);
+  const [totalNodes, setTotalNodes, onTotalNodesChange] = useNodesState([]);
 
   //edges
   const [portToServiceEdges, setPortToServiceEdges] = useState<any[]>([]);
@@ -41,10 +44,6 @@ const App = () => {
   const totalEdges = portToServiceEdges
     .concat(serviceToNetworkEdges)
     .concat(volumeToNetworkEdges);
-  const totalNodes = networkNodes
-    .concat(serviceNodes)
-    .concat(volumeNodes)
-    .concat(portNodes);
 
   const handleFileInputChange = (event: any) => {
     const file = event.target.files[0];
@@ -110,14 +109,14 @@ const App = () => {
       const mappedServices = Object.entries(fileContent.services as any).map(
         ([serviceName, serviceConfig]) => ({ [serviceName]: serviceConfig })
       );
-      let mappedServiceWihoutPort: any[] = [];
+
       let clonedMappedService: any[] = [];
 
       mappedServices.forEach((item, index) => {
         clonedMappedService?.push(item);
       });
 
-      let serviceWithPorts = clonedMappedService.map((item, index) => {
+      let services = clonedMappedService.map((item, index) => {
         return {
           id: `service-${index.toString()}`,
           position: {
@@ -125,13 +124,14 @@ const App = () => {
             y: -200,
           },
           type: "service",
+
           data: item,
         };
       });
 
       //store port nodes
       let portNodesOfService: any[] = [];
-      serviceWithPorts?.forEach((item, index) => {
+      services?.forEach((item, index) => {
         let listPortsOfServices = item.data?.[Object.keys(item.data)[0]]
           ?.ports as string[];
         listPortsOfServices?.forEach((port, portIndex) => {
@@ -150,7 +150,7 @@ const App = () => {
       //store edges
       let edgesFromPortToService: any[] = [];
       portNodesOfService.forEach((port, portIndex) => {
-        serviceWithPorts.forEach((service, serviceIndex) => {
+        services.forEach((service, serviceIndex) => {
           if (
             (
               service.data?.[Object.keys(service.data)[0]]?.ports as string[]
@@ -175,7 +175,7 @@ const App = () => {
 
       setPortNodes(portNodesOfService);
       setPortToServiceEdges(edgesFromPortToService);
-      setServiceNodes(serviceWithPorts);
+      setServiceNodes(services);
     }
   }, [fileContent]);
 
@@ -225,7 +225,6 @@ const App = () => {
               let split = kiet?.split(":") as string[];
               split.forEach((splitItem, splitIndex) => {
                 if (splitItem == volume.id) {
-                  console.log("u made it");
                   edgesFromServiceToVolume?.push({
                     id: `${volume.id}-${service.id}`,
                     source: service.id,
@@ -248,19 +247,44 @@ const App = () => {
     setVolumeToNetworkEdges(edgesFromServiceToVolume);
   }, [volumeNodes, serviceNodes]);
 
+  useEffect(() => {
+    setTotalNodes(
+      networkNodes.concat(serviceNodes).concat(volumeNodes).concat(portNodes)
+    );
+  }, [volumeNodes, networkNodes, serviceNodes]);
+
   return (
     <>
       {fileContent ? (
-        <>
-          <div style={{ width: "100vw", height: "100vh" }}>
+        <div
+          style={{
+            height: "100vh",
+            display: "flex",
+            justifyContent: "space-between",
+          }}
+        >
+          <div
+            style={{
+              width: "90vw",
+              height: "90vh",
+              alignItems: "center",
+            }}
+          >
             <ReactFlow
               nodes={totalNodes}
               edges={totalEdges}
+              onNodesChange={onTotalNodesChange}
               nodeTypes={nodeTypes}
+              nodesDraggable={true}
               connectionLineComponent={CustomConnectionLine}
+              style={{ borderRightWidth: 5, borderColor: "#d1d5db" }}
             />
+
+            <PositionedMenu />
           </div>
-        </>
+
+          {/* <ToolBar /> */}
+        </div>
       ) : (
         <Banner handleFileInputChange={handleFileInputChange} />
       )}

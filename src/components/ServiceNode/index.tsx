@@ -20,6 +20,7 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
           image: {data?.[serviceKeyName]?.image}
         </h4>
       </div>
+
       <Handle type="source" position={Position.Bottom} id="a" />
     </>
   );
