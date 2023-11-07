@@ -24,6 +24,7 @@ const UploadButton: React.FC<IUploadButtonProps> = (props) => {
   return (
     <Button
       component="label"
+      color="primary"
       role={undefined}
       size="lg"
       tabIndex={-1}

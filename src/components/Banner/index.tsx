@@ -23,7 +23,7 @@ const Banner: React.FC<IBannerProps> = (props) => {
           alt="Image"
           className="mt-4 mx-auto w-[500px]"
         />
-        <div className="mt-8 flex space-x-8 justify-center">
+        <div className="mt-4 flex space-x-8 justify-center">
           <UploadButton onChange={handleFileInputChange} />
           <Button
             size="lg"

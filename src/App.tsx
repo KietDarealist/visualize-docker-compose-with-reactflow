@@ -265,8 +265,8 @@ const App = () => {
         >
           <div
             style={{
-              width: "90vw",
-              height: "90vh",
+              width: "100vw",
+              height: "100vh",
               alignItems: "center",
             }}
           >
