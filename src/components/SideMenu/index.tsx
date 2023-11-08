@@ -8,41 +8,36 @@ import CustomizeNodeModal from "../CustomizeServiceNode";
 import { Button, Typography } from "@mui/joy";
 import {
   Album,
-  BackHand,
   ChevronLeft,
-  Close,
   DoorBack,
-  DoorBackOutlined,
-  Edit,
   FileDownload,
   Redo,
   Settings,
   Share,
 } from "@mui/icons-material";
+import AlertDialogModal from "../AlertDialogModal";
 
-export default function SideMenu() {
-  const createHandleClose = (index: number) => () => {
-    if (typeof index === "number") {
-    }
-  };
+interface ISideMenuProps {
+  handlePressExit: () => void;
+}
+
+const SideMenu: React.FC<ISideMenuProps> = (props) => {
+  const { handlePressExit } = props;
+
   const [openCustomizeNode, setOpenCustomizeNode] =
     React.useState<boolean>(false);
+  const [openAlertExit, setOpenAlertExit] = React.useState<boolean>(false);
 
-  const handlePressCustomNode = () => setOpenCustomizeNode(true);
+  const handlePressCutomServiceNode = () => setOpenCustomizeNode(true);
+  const handlePressCustomNetworkNode = () => setOpenCustomizeNode(true);
+  const handlePressCustomVolumeNode = () => setOpenCustomizeNode(true);
+  const handlePressCustomPortNode = () => setOpenCustomizeNode(true);
+  const handlePressCustomEdge = () => setOpenCustomizeNode(true);
+  const handlePressExport = () => setOpenCustomizeNode(true);
 
   return (
     <>
       <div className="w-[20vw] h-full flex flex-col justify-center px-4">
-        {/* <Typography
-          component="h4"
-          id="modal-title"
-          textColor="text.tertiary"
-          fontWeight="lg"
-          textAlign="center"
-          textTransform="uppercase"
-        >
-          Visualize Docker With ReactFlow
-        </Typography> */}
         <img
           src={require("../../../src/assets/images/logo-docker.gif")}
           alt="Image"
@@ -52,10 +47,12 @@ export default function SideMenu() {
           variant="outlined"
           color="primary"
           startDecorator={<Settings sx={{ width: 20, height: 20 }} />}
+          onClick={handlePressCutomServiceNode}
         >
           Customize Service Node
         </Button>
         <Button
+          onClick={handlePressCustomNetworkNode}
           variant="outlined"
           color="primary"
           sx={{ marginTop: 2 }}
@@ -64,6 +61,7 @@ export default function SideMenu() {
           Customize Network Node
         </Button>
         <Button
+          onClick={handlePressCustomVolumeNode}
           variant="outlined"
           color="primary"
           sx={{ marginTop: 2 }}
@@ -72,6 +70,7 @@ export default function SideMenu() {
           Customize Volume Node
         </Button>
         <Button
+          onClick={handlePressCustomPortNode}
           variant="outlined"
           color="primary"
           sx={{ marginTop: 2 }}
@@ -80,14 +79,16 @@ export default function SideMenu() {
           Customize Port Node
         </Button>
         <Button
+          onClick={handlePressCustomEdge}
           variant="outlined"
           color="primary"
           sx={{ marginTop: 2 }}
           startDecorator={<Redo sx={{ width: 20, height: 20 }} />}
         >
-          Customize Edge Node
+          Customize Edge
         </Button>
         <Button
+          onClick={handlePressExport}
           variant="outlined"
           color="primary"
           sx={{ marginTop: 2 }}
@@ -96,6 +97,7 @@ export default function SideMenu() {
           Export PDF
         </Button>
         <Button
+          onClick={() => setOpenAlertExit(true)}
           variant="outlined"
           color="danger"
           sx={{ marginTop: 2 }}
@@ -109,6 +111,16 @@ export default function SideMenu() {
         isOpen={openCustomizeNode}
         onClose={() => setOpenCustomizeNode(false)}
       />
+
+      <AlertDialogModal
+        isOpen={openAlertExit}
+        title="Are you sure"
+        description="All your progress will be losing if you exit"
+        onClose={() => setOpenAlertExit(false)}
+        onConfirm={handlePressExit}
+      />
     </>
   );
-}
+};
+
+export default SideMenu;

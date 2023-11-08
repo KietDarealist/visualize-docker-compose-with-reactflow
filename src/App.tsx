@@ -283,7 +283,11 @@ const App = () => {
           </div>
 
           {/* <ToolBar /> */}
-          <SideMenu />
+          <SideMenu
+            handlePressExit={() => {
+              setFileContent(null);
+            }}
+          />
         </div>
       ) : (
         <Banner handleFileInputChange={handleFileInputChange} />
