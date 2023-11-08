@@ -17,7 +17,7 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
       <Handle type="target" position={Position.Top} />
       <div
         className=" border-solid border  align-center min-h-[130px] max-h-
-      [250px] w-52 max-w-[220px] overflow-hidden px-2 py-4 rounded-3xl border-gray-300 bg-gray-100 flex flex-col justify-center"
+      [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 rounded-3xl border-gray-300 bg-gray-100 flex flex-col justify-center"
       >
         <Typography
           id="modal-desc"

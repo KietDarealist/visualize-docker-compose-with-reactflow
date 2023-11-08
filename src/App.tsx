@@ -11,8 +11,9 @@ import ServiceNode from "./components/ServiceNode";
 import PortNode from "./components/PortNode";
 import CustomConnectionLine from "./components/CustomConnectionLine";
 import Banner from "./components/Banner";
-import ToolBar from "./components/ToolBar";
-import PositionedMenu from "./components/PositionMenu";
+
+import PositionedMenu from "./components/SideMenu";
+import SideMenu from "./components/SideMenu";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
@@ -265,7 +266,7 @@ const App = () => {
         >
           <div
             style={{
-              width: "100vw",
+              width: "80vw",
               height: "100vh",
               alignItems: "center",
             }}
@@ -279,11 +280,10 @@ const App = () => {
               connectionLineComponent={CustomConnectionLine}
               style={{ borderRightWidth: 5, borderColor: "#d1d5db" }}
             />
-
-            <PositionedMenu />
           </div>
 
           {/* <ToolBar /> */}
+          <SideMenu />
         </div>
       ) : (
         <Banner handleFileInputChange={handleFileInputChange} />

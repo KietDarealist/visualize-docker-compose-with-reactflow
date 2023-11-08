@@ -30,8 +30,8 @@ const CustomizeNodeModal: React.FC<ICustomizeModalProps> = (props) => {
             <Sheet
               variant="outlined"
               sx={{
-                minWidth: 500,
-                minHeight: 500,
+                minWidth: 1200,
+                minHeight: 200,
                 borderRadius: "md",
                 p: 3,
                 boxShadow: "lg",
@@ -46,7 +46,7 @@ const CustomizeNodeModal: React.FC<ICustomizeModalProps> = (props) => {
                 fontWeight="lg"
                 mb={1}
               >
-                Customize your node
+                Customize your service node
               </Typography>
               <Typography id="modal-desc" textColor="text.tertiary">
                 Styling your own node using these beautiful below
