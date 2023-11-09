@@ -4,7 +4,7 @@ import Menu from "@mui/joy/Menu";
 import MenuItem from "@mui/joy/MenuItem";
 import Apps from "@mui/icons-material/Menu";
 import Dropdown from "@mui/joy/Dropdown";
-import CustomizeNodeModal from "../CustomizeServiceNode";
+import CustomServiceNode from "../CustomModal/CustomizeServiceNode";
 import { Button, Typography } from "@mui/joy";
 import {
   Album,
@@ -90,7 +90,7 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
         <Button
           onClick={handlePressExport}
           variant="outlined"
-          color="primary"
+          color="neutral"
           sx={{ marginTop: 2 }}
           startDecorator={<FileDownload sx={{ width: 20, height: 20 }} />}
         >
@@ -107,7 +107,7 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
         </Button>
       </div>
 
-      <CustomizeNodeModal
+      <CustomServiceNode
         isOpen={openCustomizeNode}
         onClose={() => setOpenCustomizeNode(false)}
       />

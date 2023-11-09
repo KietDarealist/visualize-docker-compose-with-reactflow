@@ -12,7 +12,6 @@ import PortNode from "./components/PortNode";
 import CustomConnectionLine from "./components/CustomConnectionLine";
 import Banner from "./components/Banner";
 
-import PositionedMenu from "./components/SideMenu";
 import SideMenu from "./components/SideMenu";
 
 const App = () => {
