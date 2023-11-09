@@ -77,7 +77,10 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
                     Image: Service Image
                   </h4>
                 </div>
-                <EditTool onSelectColor={() => {}} />
+                <EditTool
+                  onSelectColor={() => {}}
+                  handlePressConfirm={() => {}}
+                />
               </div>
             </Sheet>
           </Modal>
