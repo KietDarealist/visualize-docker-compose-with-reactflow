@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { decrement, increment } from "../redux/counter/reducer";
+import { decrement, increment } from "../redux/counter";
 import { RootState } from "../redux";
 
 const useCounter = () => {

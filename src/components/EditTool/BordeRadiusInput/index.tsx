@@ -3,18 +3,19 @@ import { Box, Slider, Typography } from "@mui/joy";
 import React from "react";
 
 interface IColorPickerProps {
-  onPickColor: (color: string) => void;
+  handleChangeBorderRadius: (borderRadius: number) => void;
 }
 
 const BorderRadiusInput: React.FC<IColorPickerProps> = (props) => {
+  const { handleChangeBorderRadius } = props;
   const fontSizes = [
     {
       value: 5,
       label: "5px",
     },
     {
-      value: 20,
-      label: "20px",
+      value: 24,
+      label: "24px",
     },
     {
       value: 40,
@@ -39,14 +40,15 @@ const BorderRadiusInput: React.FC<IColorPickerProps> = (props) => {
       <Box sx={{ width: 280 }}>
         <Slider
           aria-label="Custom marks"
-          defaultValue={5}
+          defaultValue={24}
           onChange={(value) => {
             console.log("value is", (value.target as any).value);
+            handleChangeBorderRadius((value.target as any).value);
           }}
           getAriaValueText={valueText}
           step={5}
           valueLabelDisplay="auto"
-          max={50}
+          max={100}
           marks={fontSizes}
         />
       </Box>

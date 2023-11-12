@@ -1,6 +1,7 @@
 import { Typography } from "@mui/joy";
 import React, { useCallback } from "react";
 import { Handle, Position } from "reactflow";
+import useServiceNode from "../../hooks/useServiceNode";
 
 interface IServiceNodeProps {
   data: any;
@@ -11,13 +12,15 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
   let serviceKeyName = Object.keys(data)[0];
 
   const onChange = useCallback((evt: any) => {}, []);
+  const { backgroundColor, borderRadius } = useServiceNode();
 
   return (
     <>
       <Handle type="target" position={Position.Top} />
       <div
+        style={{ borderRadius: `${borderRadius}px` }}
         className=" border-solid border  align-center min-h-[130px] max-h-
-      [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 rounded-3xl border-gray-300 bg-gray-100 flex flex-col justify-center"
+      [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 border-gray-300 bg-gray-100 flex flex-col justify-center"
       >
         <Typography
           id="modal-desc"

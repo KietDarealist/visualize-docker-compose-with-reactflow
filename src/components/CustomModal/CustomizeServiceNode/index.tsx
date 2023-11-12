@@ -9,7 +9,7 @@ import Sheet from "@mui/joy/Sheet";
 import EditTool from "../../EditTool";
 
 //hooks
-import useStyles from "../../../hooks/useStyles";
+import useServiceNode from "../../../hooks/useServiceNode";
 
 interface ICustomServiceNodeProps {
   isOpen: boolean;
@@ -18,7 +18,20 @@ interface ICustomServiceNodeProps {
 
 const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
   const { isOpen, onClose } = props;
-  const { serviceNodeStyle, dispatchSetServiceStyle } = useStyles();
+  const {
+    setLocalBackgroundColor,
+    setLocalTextColor,
+    setLocalBorderRadius,
+    setLocalFontSize,
+    setLocalFontWeight,
+
+    localBackgroundColor,
+    localBorderRadius,
+    localTextColor,
+    localFontSize,
+    localFontWeight,
+    onConfirmChangeServiceNodeStyle,
+  } = useServiceNode();
 
   return (
     <>
@@ -61,25 +74,41 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
               </Typography>
               <div className="flex items-center mt-12 space-x-40">
                 <div
-                  className=" border-solid border  align-center min-h-[130px] max-h-
-                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 rounded-3xl 
-                          border-gray-300 bg-gray-100 flex flex-col justify-center "
+                  style={{
+                    backgroundColor: localBackgroundColor,
+                    borderRadius: `${localBorderRadius}px`,
+                  }}
+                  className={` border-solid border  align-center min-h-[130px] max-h-
+                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
+                          border-gray-300  flex flex-col justify-center`}
                 >
-                  <Typography
-                    id="modal-desc"
-                    textColor="text.black"
-                    fontSize="sm"
-                    textAlign="center"
+                  <h4
+                    style={{
+                      color: localTextColor,
+                      fontSize: localFontSize,
+                      fontWeight: localFontWeight,
+                    }}
+                    className={`text-center text-sm break-word`}
                   >
-                    Serivce Name
-                  </Typography>
-                  <h4 className="text-center text-sm break-words text-gray-600 font-normal">
-                    Image: Service Image
+                    Service name <br /> Image: Service Image
                   </h4>
                 </div>
                 <EditTool
-                  onSelectColor={() => {}}
-                  handlePressConfirm={() => {}}
+                  onSelectColor={(color) => setLocalBackgroundColor(color)}
+                  onSelectTextColor={(textColor) =>
+                    setLocalTextColor(textColor)
+                  }
+                  onChangeFontSize={(fontSize) => setLocalFontSize(fontSize)}
+                  onChangeFontWeight={(fontWeight) =>
+                    setLocalFontWeight(fontWeight)
+                  }
+                  onChangeBorderRadius={(borderRadius) =>
+                    setLocalBorderRadius(borderRadius)
+                  }
+                  handlePressConfirm={() => {
+                    onConfirmChangeServiceNodeStyle();
+                    onClose();
+                  }}
                 />
               </div>
             </Sheet>

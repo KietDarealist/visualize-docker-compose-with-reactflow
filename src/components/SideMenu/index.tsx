@@ -16,6 +16,10 @@ import {
   Share,
 } from "@mui/icons-material";
 import AlertDialogModal from "../AlertDialogModal";
+import CustomNetworkNode from "../CustomModal/CustomNetworkNode";
+import CustomVolumeNode from "../CustomModal/CustomVolumeNode";
+import CustomPortNode from "../CustomModal/CustomPortNode";
+import CustomEdge from "../CustomModal/CustomEdge";
 
 interface ISideMenuProps {
   handlePressExit: () => void;
@@ -26,13 +30,20 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
 
   const [openCustomizeNode, setOpenCustomizeNode] =
     React.useState<boolean>(false);
+  const [openCustomNetworkNode, setOpenCustomNetworkNode] =
+    React.useState<boolean>(false);
+  const [openCustomVolumeNode, setOpenCustomVolumeNode] =
+    React.useState<boolean>(false);
+  const [openCustomPortNode, setOpenCustomPortNode] =
+    React.useState<boolean>(false);
+  const [openCustomEdge, setOpenCustomEdge] = React.useState<boolean>(false);
   const [openAlertExit, setOpenAlertExit] = React.useState<boolean>(false);
 
   const handlePressCutomServiceNode = () => setOpenCustomizeNode(true);
-  const handlePressCustomNetworkNode = () => setOpenCustomizeNode(true);
-  const handlePressCustomVolumeNode = () => setOpenCustomizeNode(true);
-  const handlePressCustomPortNode = () => setOpenCustomizeNode(true);
-  const handlePressCustomEdge = () => setOpenCustomizeNode(true);
+  const handlePressCustomNetworkNode = () => setOpenCustomNetworkNode(true);
+  const handlePressCustomVolumeNode = () => setOpenCustomVolumeNode(true);
+  const handlePressCustomPortNode = () => setOpenCustomPortNode(true);
+  const handlePressCustomEdge = () => setOpenCustomEdge(true);
   const handlePressExport = () => setOpenCustomizeNode(true);
 
   return (
@@ -110,6 +121,26 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
       <CustomServiceNode
         isOpen={openCustomizeNode}
         onClose={() => setOpenCustomizeNode(false)}
+      />
+
+      <CustomNetworkNode
+        isOpen={openCustomNetworkNode}
+        onClose={() => setOpenCustomNetworkNode(false)}
+      />
+
+      <CustomVolumeNode
+        isOpen={openCustomVolumeNode}
+        onClose={() => setOpenCustomVolumeNode(false)}
+      />
+
+      <CustomPortNode
+        isOpen={openCustomPortNode}
+        onClose={() => setOpenCustomPortNode(false)}
+      />
+
+      <CustomEdge
+        isOpen={openCustomEdge}
+        onClose={() => setOpenCustomEdge(false)}
       />
 
       <AlertDialogModal

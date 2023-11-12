@@ -1,37 +1,63 @@
 import { Box, Slider, Typography } from "@mui/joy";
 import React from "react";
 
-interface ITextSizeSliderProps {}
+interface ITextSizeSliderProps {
+  handleChangeFontSize: (fontSize: number) => void;
+  handleChangeFontWeight: (fontWeight: number) => void;
+}
 
 const TextSizeSlider: React.FC<ITextSizeSliderProps> = (props) => {
+  const { handleChangeFontSize, handleChangeFontWeight } = props;
   const fontSizes = [
+    {
+      value: 8,
+      label: "8px",
+    },
     {
       value: 16,
       label: "16px",
     },
     {
-      value: 32,
-      label: "32px",
-    },
-    {
-      value: 48,
-      label: "48px",
-    },
-    {
-      value: 64,
-      label: "64px",
+      value: 24,
+      label: "24px",
     },
   ];
 
   const fontWeights = [
-    "extralight",
-    "light",
-    "thin",
-    "normal",
-    "medium",
-    "semibold",
-    "bold",
-    "extrabold",
+    {
+      label: "thin",
+      value: 100,
+    },
+    {
+      label: "extralight",
+      value: 200,
+    },
+
+    {
+      label: "light",
+      value: 300,
+    },
+
+    {
+      label: "normal",
+      value: 400,
+    },
+    {
+      label: "medium",
+      value: 500,
+    },
+    {
+      label: "semibold",
+      value: 600,
+    },
+    {
+      label: "bold",
+      value: 700,
+    },
+    {
+      label: "extrabold",
+      value: 800,
+    },
   ];
 
   function valueText(value: number) {
@@ -52,14 +78,16 @@ const TextSizeSlider: React.FC<ITextSizeSliderProps> = (props) => {
       <Box sx={{ width: 280 }}>
         <Slider
           aria-label="Custom marks"
-          defaultValue={4}
+          defaultValue={14}
           onChange={(value) => {
             console.log("value is", (value.target as any).value);
+            handleChangeFontSize((value.target as any).value);
           }}
           getAriaValueText={valueText}
-          step={4}
+          step={1}
+          min={8}
           valueLabelDisplay="auto"
-          max={80}
+          max={24}
           marks={fontSizes}
         />
       </Box>
@@ -76,7 +104,11 @@ const TextSizeSlider: React.FC<ITextSizeSliderProps> = (props) => {
       </Typography>
       <div className="flex gap-x-2 gap-y-1 max-w-[200px] flex-wrap mt-1">
         {fontWeights.map((item, index) => (
-          <p className={`font-${item} text-md`}>{item}</p>
+          <button onClick={() => handleChangeFontWeight(item.value)}>
+            <p style={{ fontWeight: item.value }} className={`text-md`}>
+              {item.label}
+            </p>
+          </button>
         ))}
       </div>
     </div>

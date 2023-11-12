@@ -1,11 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
-import counterReducer from "./counter/reducer";
-import stylesReducer from "./styles/reducer";
+import counterReducer from "./counter";
+import serviceNodeReducer from "./serviceNode";
+import networkNodeReducer from "./networkNode";
+import volumeNodeReducer from "./volumeNode";
+import portNodeReducer from "./portNode"
+import edgeReducer from "./edge";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    styles: stylesReducer,
+    serviceNode: serviceNodeReducer,
+    networkNode: networkNodeReducer,
+    volumeNode: volumeNodeReducer,
+    portNode: portNodeReducer,
+    edge: edgeReducer,
   },
 });
 
