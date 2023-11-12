@@ -9,7 +9,7 @@ import Sheet from "@mui/joy/Sheet";
 import EditTool from "../../EditTool";
 
 //hooks
-import usePortNode from "../../../hooks/usePortNode";
+import useVolumeNode from "../../../hooks/useVolumeNode";
 
 interface ICustomVolumeNodeProps {
   isOpen: boolean;
@@ -31,7 +31,7 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
     localFontSize,
     localFontWeight,
     onConfirmChangeServiceNodeStyle,
-  } = usePortNode();
+  } = useVolumeNode();
 
   return (
     <>
@@ -78,9 +78,9 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
                     backgroundColor: localBackgroundColor,
                     borderRadius: `${localBorderRadius}px`,
                   }}
-                  className={` border-solid border  align-center min-h-[130px] max-h-
-                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
-                          border-gray-300  flex flex-col justify-center`}
+                  className={`border-solid border align-center min-h-[130px] max-h-
+                              [250px] w-52 max-w-[220px] overflow-hidden px-2 py-4 border-gray-300 
+                              flex flex-col justify-center`}
                 >
                   <h4
                     style={{

@@ -18,7 +18,7 @@ const NetworkNode: React.FC<INetworkNodeProps> = (props) => {
     <>
       <Handle type="target" position={Position.Top} />
       <div
-        className=" border-solid border   align-center min-h-[130px] max-h-
+        className="border-solid border align-center min-h-[130px] max-h-
           [250px] w-52 max-w-[220px] overflow-hidden px-2 py-4 border-gray-300 bg-gray-100 flex flex-col justify-center"
       >
         <Typography
