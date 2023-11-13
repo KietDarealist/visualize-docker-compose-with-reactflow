@@ -7,7 +7,7 @@ import {
   setFontSize,
   setFontWeight,
   setTextColor,
-} from "../redux/serviceNode";
+} from "../redux/portNode";
 import { useState } from "react";
 
 const usePortNode = () => {

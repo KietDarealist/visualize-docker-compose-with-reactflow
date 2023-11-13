@@ -7,7 +7,7 @@ import {
   setFontSize,
   setFontWeight,
   setTextColor,
-} from "../redux/serviceNode";
+} from "../redux/volumeNode";
 import { useState } from "react";
 
 const useVolumeNode = () => {

@@ -14,7 +14,7 @@ const initialState: NetworkNodeState = {
   textColor: "black",
   fontWeight: 400,
   fontSize: 14,
-  borderRadius: 24,
+  borderRadius: 0,
 };
 
 export const networkNodeSlice = createSlice({

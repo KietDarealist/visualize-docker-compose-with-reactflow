@@ -81,7 +81,7 @@ const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
                   }}
                   className={` border-solid border  align-center min-h-[130px] max-h-
                           [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
-                          border-gray-300  flex flex-col justify-center`}
+                           flex flex-col justify-center`}
                 >
                   <h4
                     style={{

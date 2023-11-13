@@ -14,7 +14,7 @@ const initialState: VolumeNodeState = {
   textColor: "black",
   fontWeight: 400,
   fontSize: 14,
-  borderRadius: 24,
+  borderRadius: 100,
 };
 
 export const volumeNodeSlice = createSlice({

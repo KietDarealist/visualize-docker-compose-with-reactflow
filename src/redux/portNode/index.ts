@@ -14,7 +14,7 @@ const initialState: PortNodeState = {
   textColor: "black",
   fontWeight: 400,
   fontSize: 14,
-  borderRadius: 24,
+  borderRadius: 1000,
 };
 
 export const portNodeSlice = createSlice({
