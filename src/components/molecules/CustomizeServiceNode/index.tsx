@@ -6,17 +6,17 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import EditTool from "../../EditTool";
+import EditTool from "../../organisms/EditTool";
 
 //hooks
-import useVolumeNode from "../../../hooks/useVolumeNode";
+import useServiceNode from "../../../hooks/useServiceNode";
 
-interface ICustomVolumeNodeProps {
+interface ICustomServiceNodeProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
+const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
   const { isOpen, onClose } = props;
   const {
     setLocalBackgroundColor,
@@ -31,7 +31,7 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
     localFontSize,
     localFontWeight,
     onConfirmChangeServiceNodeStyle,
-  } = useVolumeNode();
+  } = useServiceNode();
 
   return (
     <>
@@ -67,7 +67,7 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
                 fontWeight="lg"
                 mb={1}
               >
-                Customize your volume node
+                Customize your service node
               </Typography>
               <Typography id="modal-desc" textColor="text.tertiary">
                 Styling your own node using these beautiful below
@@ -78,9 +78,9 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
                     backgroundColor: localBackgroundColor,
                     borderRadius: `${localBorderRadius}px`,
                   }}
-                  className={`border-solid border align-center min-h-[130px] max-h-
-                              [250px] w-52 max-w-[220px] overflow-hidden px-2 py-4 border-gray-300 
-                              flex flex-col justify-center`}
+                  className={` border-solid border  align-center min-h-[130px] max-h-
+                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
+                          border-gray-300  flex flex-col justify-center`}
                 >
                   <h4
                     style={{
@@ -90,9 +90,7 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
                     }}
                     className={`text-center text-sm break-word`}
                   >
-                    Volume name
-                    <br />
-                    Database
+                    Service name <br /> Image: Service Image
                   </h4>
                 </div>
                 <EditTool
@@ -121,4 +119,4 @@ const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
   );
 };
 
-export default CustomVolumeNode;
+export default CustomServiceNode;

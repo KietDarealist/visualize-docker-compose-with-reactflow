@@ -5,14 +5,14 @@ import yaml from "js-yaml";
 
 //styles
 import ReactFlow, { MarkerType, useNodesState } from "reactflow";
-import NetworkNode from "./components/NetworkNode";
-import VolumeNode from "./components/VolumeNode";
-import ServiceNode from "./components/ServiceNode";
-import PortNode from "./components/PortNode";
-import CustomConnectionLine from "./components/CustomConnectionLine";
-import Banner from "./components/Banner";
+import NetworkNode from "./components/atoms/NetworkNode";
+import VolumeNode from "./components/atoms/VolumeNode";
+import ServiceNode from "./components/atoms/ServiceNode";
+import PortNode from "./components/atoms/PortNode";
+import CustomConnectionLine from "./components/atoms/CustomConnectionLine";
+import Banner from "./components/organisms/Banner";
 
-import SideMenu from "./components/SideMenu";
+import SideMenu from "./components/templates/SideMenu";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(

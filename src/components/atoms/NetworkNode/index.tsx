@@ -1,19 +1,21 @@
-import { Typography } from "@mui/joy";
 import React, { useCallback } from "react";
 import { Handle, Position } from "reactflow";
-import useServiceNode from "../../hooks/useServiceNode";
+import {} from "react-shapes";
 
-interface IServiceNodeProps {
+import "./styles.css";
+import { Typography } from "@mui/joy";
+import useNetworkNode from "../../../hooks/useNetworkNode";
+
+interface INetworkNodeProps {
   data: any;
 }
 
-const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
+const NetworkNode: React.FC<INetworkNodeProps> = (props) => {
   const { data } = props;
-  let serviceKeyName = Object.keys(data)[0];
+  const { backgroundColor, borderRadius, textColor, fontSize, fontWeight } =
+    useNetworkNode();
 
   const onChange = useCallback((evt: any) => {}, []);
-  const { backgroundColor, borderRadius, textColor, fontSize, fontWeight } =
-    useServiceNode();
 
   return (
     <>
@@ -23,8 +25,9 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
           backgroundColor: backgroundColor,
           borderRadius: `${borderRadius}px`,
         }}
-        className=" border-solid border  align-center min-h-[130px] max-h-
-      [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 border-gray-300  flex flex-col justify-center"
+        className={` border-solid border  align-center min-h-[130px] max-h-
+                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
+                           flex flex-col justify-center`}
       >
         <h4
           style={{
@@ -34,8 +37,8 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
           }}
           className={`text-center text-sm break-word`}
         >
-          {serviceKeyName}
-          <br /> image: {data?.[serviceKeyName]?.image}
+          {data}
+          <br />
         </h4>
       </div>
 
@@ -44,4 +47,4 @@ const ServiceNode: React.FC<IServiceNodeProps> = (props) => {
   );
 };
 
-export default ServiceNode;
+export default NetworkNode;

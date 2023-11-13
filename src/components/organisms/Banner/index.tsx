@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "@mui/joy/Button";
-import UploadButton from "../UploadButton";
+import UploadButton from "../../atoms/UploadButton";
 import { SvgIcon } from "@mui/joy";
 
 interface IBannerProps {
@@ -19,7 +19,7 @@ const Banner: React.FC<IBannerProps> = (props) => {
           We help you visualize your docker compose file to a chart
         </p>
         <img
-          src={require("../../../src/assets/images/logo-docker.gif")}
+          src={require("../../../assets/images/logo-docker.gif")}
           alt="Image"
           className="mt-4 mx-auto w-[500px]"
         />

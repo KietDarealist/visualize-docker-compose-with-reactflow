@@ -2,18 +2,18 @@ import React, { useCallback } from "react";
 import { Handle, Position } from "reactflow";
 
 import { Typography } from "@mui/joy";
-import usePortNode from "../../hooks/usePortNode";
+import useVolumeNode from "../../../hooks/useVolumeNode";
 
-interface IPortNodeProps {
+interface INetworkNodeProps {
   data: any;
 }
 
-const PortNode: React.FC<IPortNodeProps> = (props) => {
+const NetworkNode: React.FC<INetworkNodeProps> = (props) => {
   const { data } = props;
 
   const onChange = useCallback((evt: any) => {}, []);
   const { backgroundColor, borderRadius, textColor, fontSize, fontWeight } =
-    usePortNode();
+    useVolumeNode();
 
   return (
     <>
@@ -23,9 +23,8 @@ const PortNode: React.FC<IPortNodeProps> = (props) => {
           backgroundColor: backgroundColor,
           borderRadius: `${borderRadius}px`,
         }}
-        className={` border-solid border   align-center min-h-[130px] 
-          [300px] min-w-[130px] max-w-[220px] overflow-hidden 
-          px-2 py-4 flex flex-col justify-center`}
+        className={`border-solid border align-center min-h-[130px] max-h-[300px] 
+        w-52 max-w-[220px] overflow-hidden px-2 py-4 flex flex-col justify-center`}
       >
         <h4
           style={{
@@ -44,4 +43,4 @@ const PortNode: React.FC<IPortNodeProps> = (props) => {
   );
 };
 
-export default PortNode;
+export default NetworkNode;

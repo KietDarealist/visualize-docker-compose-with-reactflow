@@ -1,21 +1,22 @@
 import * as React from "react";
 
 //styles
+import Button from "@mui/joy/Button";
 import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import EditTool from "../../EditTool";
+import EditTool from "../../organisms/EditTool";
 
 //hooks
-import useEdge from "../../../hooks/useEdge";
+import usePortNode from "../../../hooks/usePortNode";
 
-interface ICustomEdgeProps {
+interface ICustomPortNodeProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
+const CustomPortNode: React.FC<ICustomPortNodeProps> = (props) => {
   const { isOpen, onClose } = props;
   const {
     setLocalBackgroundColor,
@@ -30,7 +31,7 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
     localFontSize,
     localFontWeight,
     onConfirmChangeServiceNodeStyle,
-  } = useEdge();
+  } = usePortNode();
 
   return (
     <>
@@ -66,7 +67,7 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
                 fontWeight="lg"
                 mb={1}
               >
-                Customize your edge
+                Customize your port node
               </Typography>
               <Typography id="modal-desc" textColor="text.tertiary">
                 Styling your own node using these beautiful below
@@ -79,7 +80,7 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
                   }}
                   className={` border-solid border  align-center min-h-[130px] max-h-
                           [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
-                          border-gray-300  flex flex-col justify-center`}
+                          flex flex-col justify-center`}
                 >
                   <h4
                     style={{
@@ -89,7 +90,9 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
                     }}
                     className={`text-center text-sm break-word`}
                   >
-                    Service name <br /> Image: Service Image
+                    Port name
+                    <br />
+                    8080
                   </h4>
                 </div>
                 <EditTool
@@ -118,4 +121,4 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
   );
 };
 
-export default CustomEdge;
+export default CustomPortNode;

@@ -6,17 +6,18 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import EditTool from "../../EditTool";
+import EditTool from "../../organisms/EditTool";
 
 //hooks
 import useServiceNode from "../../../hooks/useServiceNode";
+import useNetworkNode from "../../../hooks/useNetworkNode";
 
-interface ICustomServiceNodeProps {
+interface ICustomNetworkNodeProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
+const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
   const { isOpen, onClose } = props;
   const {
     setLocalBackgroundColor,
@@ -31,7 +32,7 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
     localFontSize,
     localFontWeight,
     onConfirmChangeServiceNodeStyle,
-  } = useServiceNode();
+  } = useNetworkNode();
 
   return (
     <>
@@ -67,7 +68,7 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
                 fontWeight="lg"
                 mb={1}
               >
-                Customize your service node
+                Customize your network node
               </Typography>
               <Typography id="modal-desc" textColor="text.tertiary">
                 Styling your own node using these beautiful below
@@ -80,7 +81,7 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
                   }}
                   className={` border-solid border  align-center min-h-[130px] max-h-
                           [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
-                          border-gray-300  flex flex-col justify-center`}
+                           flex flex-col justify-center`}
                 >
                   <h4
                     style={{
@@ -90,7 +91,8 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
                     }}
                     className={`text-center text-sm break-word`}
                   >
-                    Service name <br /> Image: Service Image
+                    Network name
+                    <br /> Network
                   </h4>
                 </div>
                 <EditTool
@@ -119,4 +121,4 @@ const CustomServiceNode: React.FC<ICustomServiceNodeProps> = (props) => {
   );
 };
 
-export default CustomServiceNode;
+export default CustomNetworkNode;

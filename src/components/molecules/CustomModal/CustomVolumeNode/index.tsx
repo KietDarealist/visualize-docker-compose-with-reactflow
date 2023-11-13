@@ -6,18 +6,17 @@ import Modal from "@mui/joy/Modal";
 import ModalClose from "@mui/joy/ModalClose";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
-import EditTool from "../../EditTool";
+import EditTool from "../../../organisms/EditTool";
 
 //hooks
-import useServiceNode from "../../../hooks/useServiceNode";
-import useNetworkNode from "../../../hooks/useNetworkNode";
+import useVolumeNode from "../../../../hooks/useVolumeNode";
 
-interface ICustomNetworkNodeProps {
+interface ICustomVolumeNodeProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
+const CustomVolumeNode: React.FC<ICustomVolumeNodeProps> = (props) => {
   const { isOpen, onClose } = props;
   const {
     setLocalBackgroundColor,
@@ -32,7 +31,7 @@ const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
     localFontSize,
     localFontWeight,
     onConfirmChangeServiceNodeStyle,
-  } = useNetworkNode();
+  } = useVolumeNode();
 
   return (
     <>
@@ -68,7 +67,7 @@ const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
                 fontWeight="lg"
                 mb={1}
               >
-                Customize your network node
+                Customize your volume node
               </Typography>
               <Typography id="modal-desc" textColor="text.tertiary">
                 Styling your own node using these beautiful below
@@ -79,9 +78,9 @@ const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
                     backgroundColor: localBackgroundColor,
                     borderRadius: `${localBorderRadius}px`,
                   }}
-                  className={` border-solid border  align-center min-h-[130px] max-h-
-                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
-                           flex flex-col justify-center`}
+                  className={`border-solid border align-center min-h-[130px] max-h-
+                              [250px] w-52 max-w-[220px] overflow-hidden px-2 py-4 border-gray-300 
+                              flex flex-col justify-center`}
                 >
                   <h4
                     style={{
@@ -91,8 +90,9 @@ const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
                     }}
                     className={`text-center text-sm break-word`}
                   >
-                    Network name
-                    <br /> Network
+                    Volume name
+                    <br />
+                    Database
                   </h4>
                 </div>
                 <EditTool
@@ -121,4 +121,4 @@ const CustomNetworkNode: React.FC<ICustomNetworkNodeProps> = (props) => {
   );
 };
 
-export default CustomNetworkNode;
+export default CustomVolumeNode;

@@ -4,7 +4,7 @@ import Menu from "@mui/joy/Menu";
 import MenuItem from "@mui/joy/MenuItem";
 import Apps from "@mui/icons-material/Menu";
 import Dropdown from "@mui/joy/Dropdown";
-import CustomServiceNode from "../CustomModal/CustomizeServiceNode";
+import CustomServiceNode from "../../molecules/CustomizeServiceNode";
 import { Button, Typography } from "@mui/joy";
 import {
   Album,
@@ -15,11 +15,11 @@ import {
   Settings,
   Share,
 } from "@mui/icons-material";
-import AlertDialogModal from "../AlertDialogModal";
-import CustomNetworkNode from "../CustomModal/CustomNetworkNode";
-import CustomVolumeNode from "../CustomModal/CustomVolumeNode";
-import CustomPortNode from "../CustomModal/CustomPortNode";
-import CustomEdge from "../CustomModal/CustomEdge";
+import AlertDialogModal from "../../molecules/AlertDialogModal";
+import CustomNetworkNode from "../../molecules/CustomNetworkNode";
+import CustomVolumeNode from "../../molecules/CustomModal/CustomVolumeNode";
+import CustomPortNode from "../../molecules/CustomPortNode";
+import CustomEdge from "../../molecules/CustomEdge";
 
 interface ISideMenuProps {
   handlePressExit: () => void;
@@ -50,7 +50,7 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
     <>
       <div className="w-[20vw] h-full flex flex-col justify-center px-4">
         <img
-          src={require("../../../src/assets/images/logo-docker.gif")}
+          src={require("../../../assets/images/logo-docker.gif")}
           alt="Image"
           className="mx-auto w-[200]"
         />
