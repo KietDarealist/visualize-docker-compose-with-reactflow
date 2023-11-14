@@ -4,7 +4,12 @@ import React, { useEffect, useMemo, useState } from "react";
 import yaml from "js-yaml";
 
 //styles
-import ReactFlow, { MarkerType, useNodesState } from "reactflow";
+import ReactFlow, {
+  Background,
+  Controls,
+  MarkerType,
+  useNodesState,
+} from "reactflow";
 import NetworkNode from "./components/atoms/NetworkNode";
 import VolumeNode from "./components/atoms/VolumeNode";
 import ServiceNode from "./components/atoms/ServiceNode";
@@ -13,6 +18,7 @@ import CustomConnectionLine from "./components/atoms/CustomConnectionLine";
 import Banner from "./components/organisms/Banner";
 
 import SideMenu from "./components/templates/SideMenu";
+import EdgeExample from "./components/molecules/EdgeExample";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
@@ -276,9 +282,15 @@ const App = () => {
               onNodesChange={onTotalNodesChange}
               nodeTypes={nodeTypes}
               nodesDraggable={true}
+              fitView
+              minZoom={0.2}
               connectionLineComponent={CustomConnectionLine}
               style={{ borderRightWidth: 5, borderColor: "#d1d5db" }}
-            />
+            >
+              <Controls />
+              <Background />
+            </ReactFlow>
+            {/* <EdgeExample /> */}
           </div>
 
           {/* <ToolBar /> */}

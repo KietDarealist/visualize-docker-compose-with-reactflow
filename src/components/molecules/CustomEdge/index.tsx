@@ -10,6 +10,8 @@ import EditTool from "../../organisms/EditTool";
 //hooks
 import useEdge from "../../../hooks/useEdge";
 import EditEdgeTool from "../../organisms/EditEdgeTool";
+import ArrowRightIcon from "../../../assets/icons/ArrowRight";
+import EdgeExample from "../EdgeExample";
 
 interface ICustomEdgeProps {
   isOpen: boolean;
@@ -20,6 +22,15 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
   const { isOpen, onClose } = props;
   const { setLocalColor, setLocalThickness, localThickness, localColor } =
     useEdge();
+  const [initialEdges, setInitialEdges] = React.useState([
+    {
+      type: "bezier",
+      source: "1",
+      target: "2",
+      id: "1",
+      label: "straight",
+    },
+  ]);
 
   return (
     <>
@@ -36,7 +47,7 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
               alignItems: "center",
             }}
           >
-            <Sheet
+            {/* <Sheet
               variant="outlined"
               sx={{
                 minWidth: 1200,
@@ -61,19 +72,7 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
                 Styling your own node using these beautiful below
               </Typography>
               <div className="flex items-center mt-12 space-x-40">
-                <div>
-                  <div
-                    style={{
-                      position: "absolute",
-                      transform: `translate(-50%, -50%) translate(${100}px,${200}px)`,
-                      fontSize: 12,
-                      // everything inside EdgeLabelRenderer has no pointer events by default
-                      // if you have an interactive element, set pointer-events: all
-                      pointerEvents: "all",
-                    }}
-                    className="nodrag nopan"
-                  ></div>
-                </div>
+                <EdgeExample />
                 <EditEdgeTool
                   onSelectColor={(color) => {}}
                   onSelectThickness={() => {}}
@@ -81,7 +80,23 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
                   handlePressConfirm={() => {}}
                 />
               </div>
-            </Sheet>
+            </Sheet> */}
+            <div className="w-[1200px] h-[500px] bg-white rounded-xl px-8 py-4">
+              <Typography
+                component="h2"
+                id="modal-title"
+                level="h4"
+                textColor="inherit"
+                fontWeight="lg"
+                mb={1}
+              >
+                Customize your edge
+              </Typography>
+              <Typography id="modal-desc" textColor="text.tertiary">
+                Styling your own node using these beautiful below
+              </Typography>
+              <EdgeExample initialEdges={initialEdges} />
+            </div>
           </Modal>
         </React.Fragment>
       ) : null}
