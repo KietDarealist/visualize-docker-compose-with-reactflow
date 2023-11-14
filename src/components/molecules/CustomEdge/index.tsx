@@ -9,6 +9,7 @@ import EditTool from "../../organisms/EditTool";
 
 //hooks
 import useEdge from "../../../hooks/useEdge";
+import EditEdgeTool from "../../organisms/EditEdgeTool";
 
 interface ICustomEdgeProps {
   isOpen: boolean;
@@ -17,20 +18,8 @@ interface ICustomEdgeProps {
 
 const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
   const { isOpen, onClose } = props;
-  const {
-    setLocalBackgroundColor,
-    setLocalTextColor,
-    setLocalBorderRadius,
-    setLocalFontSize,
-    setLocalFontWeight,
-
-    localBackgroundColor,
-    localBorderRadius,
-    localTextColor,
-    localFontSize,
-    localFontWeight,
-    onConfirmChangeServiceNodeStyle,
-  } = useEdge();
+  const { setLocalColor, setLocalThickness, localThickness, localColor } =
+    useEdge();
 
   return (
     <>
@@ -72,42 +61,24 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
                 Styling your own node using these beautiful below
               </Typography>
               <div className="flex items-center mt-12 space-x-40">
-                <div
-                  style={{
-                    backgroundColor: localBackgroundColor,
-                    borderRadius: `${localBorderRadius}px`,
-                  }}
-                  className={` border-solid border  align-center min-h-[130px] max-h-
-                          [250px] min-w-[200px] max-w-[220px] overflow-hidden px-2 py-4 
-                          border-gray-300  flex flex-col justify-center`}
-                >
-                  <h4
+                <div>
+                  <div
                     style={{
-                      color: localTextColor,
-                      fontSize: localFontSize,
-                      fontWeight: localFontWeight,
+                      position: "absolute",
+                      transform: `translate(-50%, -50%) translate(${100}px,${200}px)`,
+                      fontSize: 12,
+                      // everything inside EdgeLabelRenderer has no pointer events by default
+                      // if you have an interactive element, set pointer-events: all
+                      pointerEvents: "all",
                     }}
-                    className={`text-center text-sm break-word`}
-                  >
-                    Service name <br /> Image: Service Image
-                  </h4>
+                    className="nodrag nopan"
+                  ></div>
                 </div>
-                <EditTool
-                  onSelectColor={(color) => setLocalBackgroundColor(color)}
-                  onSelectTextColor={(textColor) =>
-                    setLocalTextColor(textColor)
-                  }
-                  onChangeFontSize={(fontSize) => setLocalFontSize(fontSize)}
-                  onChangeFontWeight={(fontWeight) =>
-                    setLocalFontWeight(fontWeight)
-                  }
-                  onChangeBorderRadius={(borderRadius) =>
-                    setLocalBorderRadius(borderRadius)
-                  }
-                  handlePressConfirm={() => {
-                    onConfirmChangeServiceNodeStyle();
-                    onClose();
-                  }}
+                <EditEdgeTool
+                  onSelectColor={(color) => {}}
+                  onSelectThickness={() => {}}
+                  onSelectType={() => {}}
+                  handlePressConfirm={() => {}}
                 />
               </div>
             </Sheet>

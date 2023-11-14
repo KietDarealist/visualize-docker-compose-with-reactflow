@@ -1,68 +1,39 @@
 import { useDispatch, useSelector } from "react-redux";
 import { decrement, increment } from "../redux/counter";
 import { RootState } from "../redux";
-import {
-  setBackGroundColor,
-  setBorderRadius,
-  setFontSize,
-  setFontWeight,
-  setTextColor,
-} from "../redux/serviceNode";
+import { setColor, setThickness } from "../redux/edge";
 import { useState } from "react";
 
 const useEdge = () => {
   //hooks
-  const { backgroundColor, fontSize, fontWeight, borderRadius, textColor } =
-    useSelector((state: RootState) => state.edge);
+  const { color, thickness } = useSelector((state: RootState) => state.edge);
   const dispatch = useDispatch();
 
-  const [localBackgroundColor, setLocalBackgroundColor] =
-    useState<string>(backgroundColor);
-  const [localTextColor, setLocalTextColor] = useState<string>(textColor);
-  const [localFontSize, setLocalFontSize] = useState<number>(fontSize);
-  const [localFontWeight, setLocalFontWeight] = useState<number>(fontWeight);
-  const [localBorderRadius, setLocalBorderRadius] =
-    useState<number>(borderRadius);
+  const [localColor, setLocalColor] = useState<string>(color);
+  const [localThickness, setLocalThickness] = useState<number>(thickness);
 
   //functions
-  const dispatchSetBackgroundColor = (backgroundColor: string) =>
-    dispatch(setBackGroundColor(backgroundColor));
-  const dispatchSetTextColor = (textColor: string) =>
-    dispatch(setTextColor(textColor));
-  const dispatchSetFontSize = (fontSize: number) =>
-    dispatch(setFontSize(fontSize));
-  const dispatchSetFontWeight = (fontWeight: number) =>
-    dispatch(setFontWeight(fontWeight));
-  const dispatchSetBorderRadius = (borderRadius: number) =>
-    dispatch(setBorderRadius(borderRadius));
+  const disaptchSetThickness = (payload: number) =>
+    dispatch(setThickness(payload));
+  const dispatchSetColor = (payload: string) => dispatch(setColor(payload));
 
-  const onConfirmChangeServiceNodeStyle = () => {
-    dispatchSetBackgroundColor(localBackgroundColor);
-    dispatchSetTextColor(localTextColor);
-    dispatchSetFontSize(localFontSize);
-    dispatchSetFontWeight(localFontWeight);
-    dispatchSetBorderRadius(localBorderRadius);
+  const onConfirmChangeEdgeStyle = () => {
+    disaptchSetThickness(localThickness);
+    dispatchSetColor(localColor);
   };
 
   return {
-    backgroundColor,
-    textColor,
-    fontSize,
-    fontWeight,
-    borderRadius,
+    localColor,
+    localThickness,
 
-    localBackgroundColor,
-    localTextColor,
-    localFontSize,
-    localFontWeight,
-    localBorderRadius,
+    //state
+    color,
+    thickness,
 
-    setLocalBackgroundColor,
-    setLocalTextColor,
-    setLocalFontSize,
-    setLocalFontWeight,
-    setLocalBorderRadius,
-    onConfirmChangeServiceNodeStyle,
+    setLocalColor,
+    setLocalThickness,
+
+    onConfirmChangeEdgeStyle,
   };
 };
 

@@ -1,9 +1,9 @@
 import React from "react";
-import ColorPicker from "./ColorPicker";
-import TextSizeSlider from "./TextSizeSlider";
-import BorderRadiusInput from "./BordeRadiusInput";
+import ColorPicker from "../../atoms/ColorPicker";
+import TextSizeSlider from "../../atoms/TextSizeSlider";
+import BorderRadiusInput from "../../atoms/BordeRadiusInput";
 import { Button } from "@mui/joy";
-import TextColorPicker from "./TextColorPicker";
+import TextColorPicker from "../../atoms/TextColorPicker";
 
 interface IEditToolProps {
   onSelectColor: (color: string) => void;
