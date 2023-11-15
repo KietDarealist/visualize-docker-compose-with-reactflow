@@ -18,7 +18,7 @@ import CustomConnectionLine from "./components/atoms/CustomConnectionLine";
 import Banner from "./components/organisms/Banner";
 
 import SideMenu from "./components/templates/SideMenu";
-import EdgeExample from "./components/molecules/EdgeExample";
+import BaseEdge from "./components/atoms/BaseEdge";
 
 const App = () => {
   const [fileContent, setFileContent] = useState<IDockerComposeFile | null>(
@@ -166,7 +166,7 @@ const App = () => {
               id: `${port.id}-${service.id}`,
               source: port.id,
               target: service.id,
-              type: "straight",
+              type: "base",
               markerEnd: {
                 type: MarkerType.ArrowClosed,
                 width: 40,
@@ -202,7 +202,7 @@ const App = () => {
                 id: `${network.id}-${service.id}`,
                 source: service.id,
                 target: network.id,
-                type: "straight",
+                type: "base",
                 markerEnd: {
                   type: MarkerType.ArrowClosed,
                   width: 40,
@@ -235,7 +235,8 @@ const App = () => {
                     id: `${volume.id}-${service.id}`,
                     source: service.id,
                     target: volume.id,
-                    type: "straight",
+                    type: "base",
+                    style: { backgroundColor: "red" },
                     markerEnd: {
                       type: MarkerType.ArrowClosed,
                       width: 40,
@@ -259,6 +260,10 @@ const App = () => {
     );
   }, [volumeNodes, networkNodes, serviceNodes]);
 
+  const edgeTypes = {
+    base: BaseEdge,
+  };
+
   return (
     <>
       {fileContent ? (
@@ -281,6 +286,7 @@ const App = () => {
               edges={totalEdges}
               onNodesChange={onTotalNodesChange}
               nodeTypes={nodeTypes}
+              edgeTypes={edgeTypes}
               nodesDraggable={true}
               fitView
               minZoom={0.2}

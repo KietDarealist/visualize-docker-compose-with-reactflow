@@ -18,20 +18,21 @@ const EditEdgeTool: React.FC<IEditEdgeToolProps> = (props) => {
   const { onSelectColor, onSelectThickness, onSelectType, handlePressConfirm } =
     props;
   return (
-    <div className="flex space-x-10">
-      <ColorPicker handleSelectColor={onSelectColor} />
-      <ThicknessSlider handleChangeThickness={onSelectThickness} />
-      <div className="flex flex-col  justify-between">
-        <EdgeTypePicker />
-        <Button
-          onClick={() => {
-            handlePressConfirm();
-          }}
-          sx={{ marginTop: 4 }}
-        >
-          Confirm
-        </Button>
+    <div className="space-y-10 mt-10 items-center ">
+      <div className="flex items-center justify-between w-full space-x-10">
+        <ColorPicker handleSelectColor={onSelectColor} />
+        <ThicknessSlider handleChangeThickness={onSelectThickness} />
       </div>
+
+      <EdgeTypePicker handleSelectEdgeType={onSelectType} />
+      <Button
+        onClick={() => {
+          handlePressConfirm();
+        }}
+        sx={{ marginTop: 4, width: "100%" }}
+      >
+        Confirm
+      </Button>
     </div>
   );
 };

@@ -1,13 +1,16 @@
 import { Button, Typography } from "@mui/joy";
 import React from "react";
 
-interface IEdgeTypePickerProps {}
+interface IEdgeTypePickerProps {
+  handleSelectEdgeType: (edgeType: string) => void;
+}
 
 const EdgeTypePicker: React.FC<IEdgeTypePickerProps> = (props) => {
+  const { handleSelectEdgeType } = props;
   const edgeTypes = ["default", "straight", "step", "smoothstep"];
 
   return (
-    <div style={{ flexDirection: "row", flexWrap: "wrap", width: 400 }}>
+    <div style={{ flexDirection: "row", flexWrap: "wrap", width: 200 }}>
       <Typography
         component="h4"
         id="modal-title"
@@ -20,11 +23,12 @@ const EdgeTypePicker: React.FC<IEdgeTypePickerProps> = (props) => {
       </Typography>
       {edgeTypes.map((item, index) => (
         <Button
+          onClick={() => handleSelectEdgeType(item)}
           title={item}
           type="button"
           variant="outlined"
           color="neutral"
-          sx={{ marginRight: 1 }}
+          sx={{ marginRight: 1, marginBottom: 1 }}
         >
           {item}
         </Button>

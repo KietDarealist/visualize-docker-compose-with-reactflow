@@ -10,8 +10,6 @@ import EditTool from "../../organisms/EditTool";
 //hooks
 import useEdge from "../../../hooks/useEdge";
 import EditEdgeTool from "../../organisms/EditEdgeTool";
-import ArrowRightIcon from "../../../assets/icons/ArrowRight";
-import EdgeExample from "../EdgeExample";
 
 interface ICustomEdgeProps {
   isOpen: boolean;
@@ -20,17 +18,16 @@ interface ICustomEdgeProps {
 
 const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
   const { isOpen, onClose } = props;
-  const { setLocalColor, setLocalThickness, localThickness, localColor } =
-    useEdge();
-  const [initialEdges, setInitialEdges] = React.useState([
-    {
-      type: "bezier",
-      source: "1",
-      target: "2",
-      id: "1",
-      label: "straight",
-    },
-  ]);
+  const {
+    setLocalColor,
+    setLocalThickness,
+    setLocalEdgeType,
+    localThickness,
+    localColor,
+    localEdgeType,
+
+    onConfirmChangeEdgeStyle,
+  } = useEdge();
 
   return (
     <>
@@ -47,17 +44,7 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
               alignItems: "center",
             }}
           >
-            {/* <Sheet
-              variant="outlined"
-              sx={{
-                minWidth: 1200,
-                minHeight: 200,
-                borderRadius: "md",
-                p: 3,
-                boxShadow: "lg",
-              }}
-            >
-              <ModalClose variant="plain" sx={{ m: 1 }} />
+            <div className="bg-white rounded-xl px-8 py-4 ">
               <Typography
                 component="h2"
                 id="modal-title"
@@ -71,31 +58,21 @@ const CustomEdge: React.FC<ICustomEdgeProps> = (props) => {
               <Typography id="modal-desc" textColor="text.tertiary">
                 Styling your own node using these beautiful below
               </Typography>
-              <div className="flex items-center mt-12 space-x-40">
-                <EdgeExample />
+              <div className="w-[500px] h-[500px] flex justify-between">
                 <EditEdgeTool
-                  onSelectColor={(color) => {}}
-                  onSelectThickness={() => {}}
-                  onSelectType={() => {}}
-                  handlePressConfirm={() => {}}
+                  onSelectColor={(color) => setLocalColor(color)}
+                  onSelectThickness={(thickness) =>
+                    setLocalThickness(thickness)
+                  }
+                  onSelectType={(edgeType) => {
+                    setLocalEdgeType(edgeType);
+                  }}
+                  handlePressConfirm={() => {
+                    onClose();
+                    onConfirmChangeEdgeStyle();
+                  }}
                 />
               </div>
-            </Sheet> */}
-            <div className="w-[1200px] h-[500px] bg-white rounded-xl px-8 py-4">
-              <Typography
-                component="h2"
-                id="modal-title"
-                level="h4"
-                textColor="inherit"
-                fontWeight="lg"
-                mb={1}
-              >
-                Customize your edge
-              </Typography>
-              <Typography id="modal-desc" textColor="text.tertiary">
-                Styling your own node using these beautiful below
-              </Typography>
-              <EdgeExample initialEdges={initialEdges} />
             </div>
           </Modal>
         </React.Fragment>
