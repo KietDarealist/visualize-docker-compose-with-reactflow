@@ -80,7 +80,6 @@ const TextSizeSlider: React.FC<ITextSizeSliderProps> = (props) => {
           aria-label="Custom marks"
           defaultValue={14}
           onChange={(value) => {
-            console.log("value is", (value.target as any).value);
             handleChangeFontSize((value.target as any).value);
           }}
           getAriaValueText={valueText}

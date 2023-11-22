@@ -38,7 +38,6 @@ const ThicknessSlider: React.FC<IThicknessSliderProps> = (props) => {
           aria-label="Custom marks"
           defaultValue={1}
           onChange={(value) => {
-            console.log("value is", (value.target as any).value);
             handleChangeThickness((value.target as any).value);
           }}
           getAriaValueText={valueText}

@@ -42,7 +42,6 @@ const BorderRadiusInput: React.FC<IColorPickerProps> = (props) => {
           aria-label="Custom marks"
           defaultValue={24}
           onChange={(value) => {
-            console.log("value is", (value.target as any).value);
             handleChangeBorderRadius((value.target as any).value);
           }}
           getAriaValueText={valueText}

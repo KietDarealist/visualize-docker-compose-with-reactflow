@@ -76,6 +76,8 @@ const App = () => {
 
   useEffect(() => {
     if (fileContent) {
+      console.log("fileContent", fileContent);
+
       //store service nodes
       if (!!fileContent.networks) {
         let networks = Object.keys(fileContent.networks).map((item, index) => {
