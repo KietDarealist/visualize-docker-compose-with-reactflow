@@ -98,7 +98,7 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
         >
           Customize Edge
         </Button>
-        <Button
+        {/* <Button
           onClick={handlePressExport}
           variant="outlined"
           color="neutral"
@@ -106,7 +106,7 @@ const SideMenu: React.FC<ISideMenuProps> = (props) => {
           startDecorator={<FileDownload sx={{ width: 20, height: 20 }} />}
         >
           Export PDF
-        </Button>
+        </Button> */}
         <Button
           onClick={() => setOpenAlertExit(true)}
           variant="outlined"

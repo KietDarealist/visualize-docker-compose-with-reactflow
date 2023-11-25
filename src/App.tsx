@@ -298,7 +298,6 @@ const App = () => {
               <Controls />
               <Background />
             </ReactFlow>
-            {/* <EdgeExample /> */}
           </div>
 
           {/* <ToolBar /> */}
